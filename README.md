@@ -5,7 +5,7 @@ SQL, JS, Scala, C, Bash) avec la coloration d'un thème sombre classique.
 
 | Où | Ce que fait le mod |
 | --- | --- |
-| **App desktop / mobile** | Thème très sombre + fond animé : la pluie tombe sur les côtés de la fenêtre, le centre reste dégagé pour la lecture. |
+| **App desktop / mobile** | Thème très sombre + fond de pluie de code sur les côtés de la fenêtre, le centre reste dégagé pour la lecture. Le SVG est animé en CSS, mais l'app desktop actuelle fige les fonds : la pluie y apparaît donc immobile (chaque bloc a une position de départ répartie). |
 | **Terminal (CLI)** | Le terminal ne dessine ni thème ni fond : tapez `/code-rain` pour afficher (ou masquer) la pluie dans un panneau animé. |
 
 Chacun prend ce qu'il veut : rien ne s'affiche dans le terminal tant que vous ne
