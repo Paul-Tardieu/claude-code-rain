@@ -1,0 +1,6 @@
+{
+  "name": "code-rain",
+  "version": "0.1.0",
+  "description": "Thème très sombre avec une pluie de code coloré façon IDE (fond animé sur desktop, panneau /code-rain dans le terminal)",
+  "author": { "name": "Paul-Tardieu" }
+}

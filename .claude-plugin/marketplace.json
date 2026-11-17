@@ -1,0 +1,5 @@
+{
+  "name": "claude-code-rain",
+  "owner": { "name": "Paul-Tardieu" },
+  "plugins": [{ "name": "code-rain", "source": "./" }]
+}
