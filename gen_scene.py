@@ -167,6 +167,7 @@ lanes = [
     (110, 13, .55), (1290, 13, .55),                                   # premier plan
 ]
 keyframes = {}
+rules = []  # une classe par bloc : l'app retire les attributs style="…" du SVG
 for x, size, op in lanes:
     lh = int(size * 1.45)
     # Même départ (hauteur du plus grand bloc) pour tous => même vitesse dans le couloir,
@@ -186,16 +187,17 @@ for x, size, op in lanes:
         elapsed = (phase + dur * j / n) % dur
         # Position à t=0 en attribut : si l'animation ne tourne pas, la scène reste répartie.
         y0 = -maxh + travel * elapsed / dur
+        cls = f"b{len(rules)}"
+        rules.append(f".{cls}{{animation:{name} {dur:.1f}s linear -{elapsed:.1f}s infinite}}")
         out.append(
             f'<g transform="translate({x} 0)" opacity="{op}" font-size="{size}">'
-            f'<g transform="translate(0 {y0:.0f})" '
-            f'style="animation:{name} {dur:.1f}s linear -{elapsed:.1f}s infinite">'
+            f'<g class="{cls}" transform="translate(0 {y0:.0f})">'
             f'{g}</g></g>')
 out.append('</g>')
 # assombrit haut et bas (zone titre / zone de saisie)
 out.append(f'<rect width="{W}" height="{H}" fill="url(#vfade)" opacity=".6"/>')
 out.append('</svg>')
-svg = "".join(out).replace("KEYFRAMES", "".join(keyframes.values()))
+svg = "".join(out).replace("KEYFRAMES", "".join(keyframes.values()) + "".join(rules))
 sys.stderr.write(f"{len(svg)} caractères\n")
 # Flux pour le terminal : chaque langage devient une suite de caractères (espaces
 # multiples réduits) et, en parallèle, la classe de couleur de chaque caractère.
