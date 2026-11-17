@@ -144,6 +144,7 @@ out.append("""<style>
 text{font-family:ui-monospace,'JetBrains Mono','DejaVu Sans Mono',Menlo,Consolas,monospace;fill:#d4d4d4}
 .k{fill:#569cd6}.s{fill:#ce9178}.c{fill:#6a9955;font-style:italic}.n{fill:#b5cea8}
 .t{fill:#4ec9b0}.f{fill:#dcdcaa}.v{fill:#9cdcfe}.g{fill:#569cd6}.a{fill:#9cdcfe}.p{fill:#808080}
+KEYFRAMES
 </style>""")
 # Masque : visible sur les bords, s'efface vers le centre
 out.append("""<defs>
@@ -165,28 +166,36 @@ lanes = [
     (24, 11, .22), (250, 11, .22), (1180, 11, .22), (1400, 11, .22),   # fond
     (110, 13, .55), (1290, 13, .55),                                   # premier plan
 ]
+keyframes = {}
 for x, size, op in lanes:
     lh = int(size * 1.45)
     # Même départ (hauteur du plus grand bloc) pour tous => même vitesse dans le couloir,
     # et décalage régulier => les blocs ne se chevauchent jamais.
     maxh = max(len(t.split("\n")) for t in SNIPPETS.values()) * lh + 30
-    n = int((H + 20 + maxh) // maxh)
+    travel = H + 20 + maxh
+    n = int(travel // maxh)
     dur = random.uniform(30, 46) * (13 / size)
     phase = random.uniform(0, dur)
+    # Animation CSS (celle que l'app dessine) : une @keyframes par hauteur de départ.
+    name = f"fall{maxh}"
+    keyframes[name] = (f"@keyframes {name}{{from{{transform:translateY(-{maxh}px)}}"
+                       f"to{{transform:translateY({H + 20}px)}}}}")
     random.shuffle(langs)
     for j in range(n):
         g, h = block(langs[j % len(langs)], size, lh)
-        begin = -((phase + dur * j / n) % dur)
+        elapsed = (phase + dur * j / n) % dur
+        # Position à t=0 en attribut : si l'animation ne tourne pas, la scène reste répartie.
+        y0 = -maxh + travel * elapsed / dur
         out.append(
-            f'<g opacity="{op}" font-size="{size}"><g>'
-            f'<animateTransform attributeName="transform" type="translate" '
-            f'from="{x} {-maxh}" to="{x} {H + 20}" dur="{dur:.1f}s" begin="{begin:.1f}s" repeatCount="indefinite"/>'
+            f'<g transform="translate({x} 0)" opacity="{op}" font-size="{size}">'
+            f'<g transform="translate(0 {y0:.0f})" '
+            f'style="animation:{name} {dur:.1f}s linear -{elapsed:.1f}s infinite">'
             f'{g}</g></g>')
 out.append('</g>')
 # assombrit haut et bas (zone titre / zone de saisie)
 out.append(f'<rect width="{W}" height="{H}" fill="url(#vfade)" opacity=".6"/>')
 out.append('</svg>')
-svg = "".join(out)
+svg = "".join(out).replace("KEYFRAMES", "".join(keyframes.values()))
 sys.stderr.write(f"{len(svg)} caractères\n")
 # Flux pour le terminal : chaque langage devient une suite de caractères (espaces
 # multiples réduits) et, en parallèle, la classe de couleur de chaque caractère.
