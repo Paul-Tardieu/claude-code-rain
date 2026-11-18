@@ -1,6 +1,20 @@
 {
   "name": "code-rain",
   "version": "0.1.0",
-  "description": "Thème très sombre avec une pluie de code coloré façon IDE (fond animé sur desktop, panneau /code-rain dans le terminal)",
-  "author": { "name": "Paul-Tardieu" }
+  "description": "Animated dark theme for Claude Code: IDE-colored code rain behind the desktop app, and a /code-rain pane in the terminal",
+  "author": { "name": "Paul-Tardieu", "url": "https://github.com/Paul-Tardieu" },
+  "homepage": "https://github.com/Paul-Tardieu/claude-code-rain",
+  "repository": "https://github.com/Paul-Tardieu/claude-code-rain",
+  "keywords": [
+    "theme",
+    "dark-theme",
+    "animated-background",
+    "code-rain",
+    "matrix-rain",
+    "claude-desktop",
+    "terminal",
+    "developer",
+    "ide",
+    "vscode-dark-plus"
+  ]
 }

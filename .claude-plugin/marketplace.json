@@ -1,5 +1,16 @@
 {
   "name": "claude-code-rain",
-  "owner": { "name": "Paul-Tardieu" },
-  "plugins": [{ "name": "code-rain", "source": "./" }]
+  "owner": { "name": "Paul-Tardieu", "url": "https://github.com/Paul-Tardieu" },
+  "metadata": {
+    "description": "Animated dark theme for Claude Code (desktop app and terminal)"
+  },
+  "plugins": [
+    {
+      "name": "code-rain",
+      "source": "./",
+      "description": "Animated dark theme for Claude Code: IDE-colored code rain behind the desktop app, and a /code-rain pane in the terminal",
+      "category": "theme",
+      "keywords": ["theme", "dark-theme", "animated-background", "code-rain", "claude-desktop", "terminal", "developer"]
+    }
+  ]
 }

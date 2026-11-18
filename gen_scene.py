@@ -1,7 +1,7 @@
 # Génère hooks/scene.ts : pluie de code coloré façon IDE sur les côtés de la fenêtre.
 # Génère hooks/scene.js : la scène SVG (desktop/mobile) et les flux de caractères
 # colorés (terminal). Usage : python3 -I gen_scene.py > hooks/scene.js
-import random, re, sys, json
+import random, re, sys, json, os
 random.seed(42)
 W, H = 1600, 1000
 MAXC = 28  # largeur max d'une ligne (caractères), pour ne pas déborder vers le centre
@@ -199,6 +199,16 @@ out.append(f'<rect width="{W}" height="{H}" fill="url(#vfade)" opacity=".6"/>')
 out.append('</svg>')
 svg = "".join(out).replace("KEYFRAMES", "".join(keyframes.values()) + "".join(rules))
 sys.stderr.write(f"{len(svg)} caractères\n")
+# Aperçu pour le README (GitHub anime le CSS d'un SVG affiché en <img>) :
+# la même scène, avec le nom du mod dans la zone dégagée du centre.
+PREVIEW_TITLE = (
+    f'<g text-anchor="middle" font-family="ui-monospace,\'JetBrains Mono\',Menlo,Consolas,monospace">'
+    f'<text x="{W // 2}" y="{H // 2 - 10}" font-size="64" font-weight="700" style="fill:#e6e6e6">code-rain</text>'
+    f'<text x="{W // 2}" y="{H // 2 + 40}" font-size="22" class="p">'
+    f'animated dark theme for Claude Code · desktop app &amp; terminal</text></g>')
+preview = svg.replace("</svg>", PREVIEW_TITLE + "</svg>")
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "preview.svg"), "w") as f:
+    f.write(preview + "\n")
 # Flux pour le terminal : chaque langage devient une suite de caractères (espaces
 # multiples réduits) et, en parallèle, la classe de couleur de chaque caractère.
 streams = []
